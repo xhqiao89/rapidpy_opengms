@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ModelClass name="RAPIDpy" uid="e44c5d50-22ae-44d2-b633-946d866a683e" style="SimpleCalculation">
+  <AttributeSet>
+    <Categories>
+      <Category principle="RAPIDpy" path="inflow\lsm_rapid_process" />
+    </Categories>
+    <LocalAttributes>
+      <LocalAttribute local="EN_US" localName="RAPIDpy" wiki="https://rapidpy.readthedocs.io/en/latest/index.html">
+        <Keywords>RAPID, Python, River routing, Streamflow</Keywords>
+        <Abstract>RAPIDpy is a python interface for RAPID that assists to prepare inputs, runs the RAPID program, and provides post-processing utilities. More information about installation and the input parameters for RAPID can be found at http://rapid-hub.org. The source code for RAPID is located at https://github.com/c-h-david/rapid.</Abstract>
+      </LocalAttribute>
+    </LocalAttributes>
+  </AttributeSet>
+  <Behavior>
+    <RelatedDatasets>
+      <DatasetItem name="Text_Template" type="external" externalId="F73F31FF-2F23-4C7A-A57D-39D0C7A6C4E6" description="NetCDF_Data" />
+    </RelatedDatasets>
+	<Parameters>
+		<ProcessParameters>
+		</ProcessParameters>
+		<ControlParameters>
+		</ControlParameters>
+	</Parameters>
+    <StateGroup>
+      <States>
+        <State id="fcc8f325-d65b-4bb4-9efa-5ec733809bc6" name="mainProcess" type="basic" description="Prepare inputs and run RAPID">
+          <Event name="rapid_io_files" type="response" optional="False" description="Required rapid input files (zipped)">
+            <ResponseParameter datasetReference="Text_Template" description="input rapid files" />
+          </Event>
+          <Event name="lsm_data" type="response" optional="False" description="The forcing files(zipped)">
+            <ResponseParameter datasetReference="Text_Template" description="Forcing files" />
+          </Event>
+          <Event name="streamflow" type="noresponse" optional="False" description="Output streamflow of each reach">
+            <DispatchParameter datasetReference="NetCDF_Template" description="Streamflow" />
+          </Event>
+        </State>
+      </States>
+      <StateTransitions />
+    </StateGroup>
+  </Behavior>
+  <Runtime name="RAPIDpy" version="1.0.0" baseDir="$(ModelServicePath)/" entry="modelWrapper.py">
+    <HardwareConfigures>
+      <Add key="Main Frequency" value="1.0" />
+      <Add key="Memory Size" value="1024M" />
+    </HardwareConfigures>
+    <SoftwareConfigures>
+    </SoftwareConfigures>
+    <Assemblies>
+      <Assembly name="python.exe" path="$(DataMappingPath)/Python27/" />
+    </Assemblies>
+    <SupportiveResources>
+    </SupportiveResources>
+  </Runtime>
+</ModelClass>
